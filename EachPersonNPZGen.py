@@ -1,12 +1,11 @@
 from os import listdir
 from os.path import isdir
-from numpy import asarray
-from numpy import savez_compressed
+from numpy import asarray, load, savez_compressed
 from extractFace import Extract
-
+from CreateFaceEmbeddings import CreateFaceEmbedding
 
 def load_faces(directory):
-    faces = list()
+    faces = []
     # enumerate files
     for filename in listdir(directory):
         # path
@@ -36,14 +35,26 @@ def load_dataset(directory):
         # store
         X.extend(faces)
         y.extend(labels)
+        print(X)
+        print (y)
+        
     return asarray(X), asarray(y)
 
 
 class CreateNPZFromDirectory:
     def __init__(self, directory):
-        # load train dataset
         trainX, trainy = load_dataset(directory)
-        savez_compressed('5-celebrity-faces-dataset.npz', trainX, trainy)
+        self.NPZ_Path = 'Eric_Marcantonio.npz'
+        self.Model_Path = 'facenet_keras.h5'   
+        savez_compressed(self.NPZ_Path, trainX, trainy)
+        # load a dataset that contains one subdir for each class that in turn contains images
+        CreateFaceEmbedding(self.NPZ_Path, self.Model_Path)
 
-    # load a dataset that contains one subdir for each class that in turn contains images
+CreateNPZFromDirectory("./Eric_Marcantonio")
 
+
+# data = load('Eric_Marcantonio.npz')
+# lst = data.files
+# for item in lst:
+#     print(item)
+#     print(data[item])

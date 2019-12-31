@@ -1,0 +1,6 @@
+pip install tensorflow
+pip install matplotlib
+pip install numpy
+pip install mtcnn
+pip install keras-vggface
+pip install scikit-learn
